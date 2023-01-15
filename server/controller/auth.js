@@ -12,10 +12,10 @@ export const signUp = async (req, res, next) => {
     const existUser = await Customer.findOne({ email });
 
     if (existUser)
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({success: false, message: "User already exists" });
 
     if (password !== confirmPassword)
-      return res.status(400).json({ message: "Password doesn't match" });
+      return res.status(400).json({success: false, message: "Password doesn't match" });
 
     const newUser = await Customer.create({
       email,
@@ -37,7 +37,7 @@ export const signUp = async (req, res, next) => {
     res.status(200).json({succes: true, msg: "An Email sent to your account please verify"});
   } catch (error) {
     console.log(error);
-    res.status(500).json({ succes: false, msg: "something went wrong" });
+    res.status(500).json({success: false, msg: "Internal Server Error" });
   }
 };
 
@@ -53,24 +53,31 @@ export const signIn = async (req, res, next) => {
         return res.status(400).json({ success: false, msg: "Email not verified" });
     sendToken(existUser, 200, req, res);
   } catch (error) {
-    return res.status(500).json({ msg: "Internal Server Error" });
+    console.log(error);
+    res.status(500).json({success: false, msg: "Internal Server Error" });
   }
 };
 
 export const createStaff = async (req, res, next) => {
-  const { email, password, name, phone, address } = req.body;
-  const existStaff = await Staff.findOne({ email });
-  if (existStaff)
-    return res.status(400).json({ message: "Email already exists" });
-  const newStaff = await Staff.create({
-    email,
-    password: password ? password : 1,
-    name,
-    phone,
-    address,
-    role: "staff",
-  });
-  sendToken(newStaff, 200, req, res);
+  try {
+    const { email, password, name, phone, address } = req.body;
+    const existStaff = await Staff.findOne({ email });
+    if (existStaff)
+      return res.status(400).json({success: false, message: "Email already exists" });
+    const newStaff = await Staff.create({
+      email,
+      password: password ? password : 1,
+      name,
+      phone,
+      address,
+      role: "staff",
+    });
+    sendToken(newStaff, 200, req, res);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({success: false, msg: "Internal Server Error" });
+  }
+  
 };
 
 export const signInStaff = async (req, res, next) => {
@@ -84,7 +91,7 @@ export const signInStaff = async (req, res, next) => {
     sendToken(existStaff, 200, req, res);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ mss: "Internal Server Error" });
+    res.status(500).json({success: false, msg: "Internal Server Error" });
   }
 };
 
@@ -106,6 +113,6 @@ export const verifyEmail = async (req, res, next) => {
     return res.status(200).json({success: true, msg: 'email verified sucessfully'})
   } catch (error) {
       console.log(error);
-    return res.status(400).json({msg:"An error occured"});
+    return res.status(400).json({success: false,msg:"Internal Server Error"});
   }
 };

@@ -24,6 +24,7 @@ export const updateCustomer = async (req, res, next) => {
         })
     } catch (error) {
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -36,6 +37,7 @@ export const allCustomer = async (req, res, next) => {
         return res.status(200).send(customers);
     } catch (error) {
         return res.status(500).json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -46,10 +48,12 @@ export const allCustomer = async (req, res, next) => {
 export const getCustomer = async (req, res, next) => {
     try {
         const customer = await Customer.findById(req.user._id).select('-password');
-        if (!customer) return res.status(404).json({ msg: "No customer found" });
-        return res.status(200).json({data: customer})
+        if (!customer) return res.status(404).json({success:false, msg: "No customer found" });
+        return res.status(200).json({success: true,data: customer})
     } catch (error) {
-         return res.status(500).json({
+         return res.status(500).json(
+             {
+            success: false,
             message: "Interval Server Error",
             error,
         })
@@ -59,13 +63,13 @@ export const getCustomer = async (req, res, next) => {
 export const deleteCustomer = async (req, res, next) => {
     try {
         const _id = req.params.id
-        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send({ message: 'invalid id' })
+        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send({ success: false,message: 'invalid id' })
         const data = await Customer.findById(_id);
         if (data)
         {
             data.status = false
             await Customer.findByIdAndUpdate(_id,data,{new: true})                  
-            return res.status(200).json({ msg: "Delete Succesfully"})}
+            return res.status(200).json({ success: true,msg: "Delete Succesfully"})}
         else
             return res.json({
                 success: false,
@@ -74,6 +78,7 @@ export const deleteCustomer = async (req, res, next) => {
     } catch (error) {
         console.log(error);
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -84,7 +89,7 @@ export const changePassword = async (req, res, next) => {
     try {
         const _id = req.params.id
 
-        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send({ message: 'invalid id' })
+        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send({success: false, message: 'invalid id' })
 
         const { oldPassword, newPassword, confirmNewPassword } = req.body
 
@@ -100,6 +105,7 @@ export const changePassword = async (req, res, next) => {
     } catch (error) {
         console.log(error);
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })

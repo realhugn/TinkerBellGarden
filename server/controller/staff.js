@@ -8,6 +8,7 @@ export const getAllStaffs = async (req, res, next) => {
         return res.status(200).json({msg: "All staffs", data: staffs})
     } catch (error) {
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -21,6 +22,7 @@ export const getStaff = async (req, res, next) => {
         return res.status(200).json({data: staff})
     } catch (error) {
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -47,6 +49,7 @@ export const changePassword = async (req, res, next) => {
     } catch (error) {
         console.log(error);
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -75,6 +78,7 @@ export const updateStaff = async (req, res, next) => {
         })
     } catch (error) {
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
@@ -98,6 +102,7 @@ export const deleteStaff = async (req, res, next) => {
     } catch (error) {
         console.log(error);
         return res.json({
+            success:false,
             message: "Interval Server Error",
             error,
         })
