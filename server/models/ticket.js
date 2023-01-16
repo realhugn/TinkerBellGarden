@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ticketSchema = mongoose.Schema({
-    ticketType: { type: String, enum: ['Event', 'Unlimited', 'Casual'], required: true },
+    ticketType: { type: String, enum: ['Event', 'Casual'], required: true },
     name: { type: String, required: true },
     timeLimit :{type: Number, default: 0},
     price: { type: Number, required: true },
