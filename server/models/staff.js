@@ -7,7 +7,8 @@ const staffSchema = mongoose.Schema({
     name: {type:String, required: true},
     phone: { type: String },
     address: { type: String },
-    role: {type: String, enum :["staff" , "manager"]}
+    role: { type: String, enum: ["staff", "manager"] },
+    status: {type: Boolean, default: true}
 }, { timestamps: true })
 
 staffSchema.pre('save', async function (next) {
