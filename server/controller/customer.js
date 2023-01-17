@@ -10,8 +10,10 @@ export const updateCustomer = async (req, res, next) => {
             address: req.body.address
         }
         for (let prop in params) if (!params[prop]) delete params[prop]
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).json({success:false, msg: 'invalid id'})
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).json({ success: false, msg: 'invalid id' })
+        const oldPhone = await Customer.findById(req.params.id).phone
         const newData = await Customer.findByIdAndUpdate(req.params.id, params, { new: true }).select('-password')
+        if(newData.phone !== oldPhone) return res.status(400).json({success: false, msg: 'Phone already use'})
          if (!newData)
             return res.json({
                 success: false,
