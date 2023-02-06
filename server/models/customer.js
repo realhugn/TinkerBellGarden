@@ -5,7 +5,7 @@ const customerSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true, },
     password: { type: String, required: true },
     name: {type:String, required: true},
-    phone: { type: String },
+    phone: { type: String ,required: true, unique: true},
     address: { type: String },
     status: {type: Boolean, default: false},
     isVip: { type: Boolean, default: false },
