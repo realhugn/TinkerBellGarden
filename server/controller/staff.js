@@ -17,7 +17,7 @@ export const getAllStaffs = async (req, res, next) => {
 
 export const getStaff = async (req, res, next) => {
     try {
-        const staff = await Staff.findById(req.user._id).select('-password');
+        const staff = await Staff.findById(req.params._id).select('-password');
         if (!staff) return res.status(404).json({ msg: "No Staff found" });
         return res.status(200).json({data: staff})
     } catch (error) {

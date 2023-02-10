@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
-const gameTicketSchema = mongoose.Schema({
+const gameSchema = mongoose.Schema({
+    code: String,
     name: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    price: {type: Number, required: true}
+    price: { type: Number, required: true },
+    location: String,
+    type: ['Casual', 'Other']
 })
 
-export const GameTicket = mongoose.model("gameTicket", gameTicketSchema);
+export const Game = mongoose.model("game", gameSchema);
